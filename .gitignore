@@ -1,6 +1,8 @@
 # Xcode
 #
 
+.swiftpm
+
 ## Build generated
 build/
 DerivedData
