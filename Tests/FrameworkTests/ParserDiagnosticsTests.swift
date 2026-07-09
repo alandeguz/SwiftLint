@@ -1,8 +1,8 @@
+import SwiftLintCore
 import TestHelpers
 import Testing
 
 @testable import SwiftLintBuiltInRules
-@testable import SwiftLintCore
 
 @Suite(.parserDiagnosticsEnabled(true), .rulesRegistered)
 struct ParserDiagnosticsTests {
@@ -15,11 +15,11 @@ struct ParserDiagnosticsTests {
     func fileWithParserErrorDiagnosticsDoesntAutocorrect() throws {
         let contents = """
 			print(CGPointZero))
-			"""
-        #expect(SwiftLintFile(contents: contents).parserDiagnostics == ["unexpected code \')\' in source file"])
+			""".asExample()
+        #expect(SwiftLintFile(contents: contents.code).parserDiagnostics == ["unexpected code \')\' in source file"])
 
         let ruleDescription = LegacyConstantRule.description
-            .with(corrections: [Example(contents): Example(contents)])
+            .with(corrections: #corrections([contents: contents]))
 
         verifyCorrections(
             ruleDescription,
@@ -33,13 +33,13 @@ struct ParserDiagnosticsTests {
     @Test
     func fileWithParserWarningDiagnostics() throws {
         // extraneous duplicate parameter name; 'bar' already has an argument label
-        let original = "func foo(bar bar: String) ->   Int { 0 }"
-        let corrected = "func foo(bar bar: String) -> Int { 0 }"
+        let original = "func foo(bar bar: String) ->   Int { 0 }".asExample()
+        let corrected = "func foo(bar bar: String) -> Int { 0 }".asExample()
 
-        #expect(SwiftLintFile(contents: original).parserDiagnostics.isEmpty)
+        #expect(SwiftLintFile(contents: original.code).parserDiagnostics.isEmpty)
 
         let ruleDescription = ReturnArrowWhitespaceRule.description
-            .with(corrections: [Example(original): Example(corrected)])
+            .with(corrections: #corrections([original: corrected]))
 
         verifyCorrections(
             ruleDescription,

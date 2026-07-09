@@ -1,3 +1,4 @@
+import SwiftLintCore
 import TestHelpers
 import Testing
 
@@ -9,18 +10,18 @@ struct ObjectLiteralRuleTests {
     private let imageLiteralTriggeringExamples = ["", ".init"].flatMap { (method: String) -> [Example] in
         ["UI", "NS"].flatMap { (prefix: String) -> [Example] in
             [
-                Example("let image = ↓\(prefix)Image\(method)(named: \"foo\")")
+                Example(code: "let image = ↓\(prefix)Image\(method)(named: \"foo\")")
             ]
         }
     }
 
     private let colorLiteralTriggeringExamples = ["", ".init"].flatMap { (method: String) -> [Example] in
         ["UI", "NS"].flatMap { (prefix: String) -> [Example] in
-            [
-                Example("let color = ↓\(prefix)Color\(method)(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)"),
-                Example("let color = ↓\(prefix)Color\(method)(red: 100 / 255.0, green: 50 / 255.0, blue: 0, alpha: 1)"),
-                Example("let color = ↓\(prefix)Color\(method)(white: 0.5, alpha: 1)"),
-            ]
+            #examples([
+                "let color = ↓\(prefix)Color\(method)(red: 0.3, green: 0.3, blue: 0.3, alpha: 1)",
+                "let color = ↓\(prefix)Color\(method)(red: 100 / 255.0, green: 50 / 255.0, blue: 0, alpha: 1)",
+                "let color = ↓\(prefix)Color\(method)(white: 0.5, alpha: 1)",
+            ])
         }
     }
 

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftLintCore
 import SwiftSyntax
 
 @SwiftSyntaxRule
@@ -16,19 +17,19 @@ struct TypeBodyLengthRule: Rule {
         name: "Type Body Length",
         description: "Type bodies should not span too many lines",
         kind: .metrics,
-        nonTriggeringExamples: [
-            Example("actor A {}", configuration: testConfig),
-            Example("class C {}", configuration: testConfig),
-            Example("enum E {}", configuration: testConfig),
-            Example("extension E {}", configuration: testConfigWithAllTypes),
-            Example("protocol P {}", configuration: testConfigWithAllTypes),
-            Example("struct S {}", configuration: testConfig),
-            Example("""
+        nonTriggeringExamples: #examples([
+            "actor A {}".asExample(configuration: testConfig),
+            "class C {}".asExample(configuration: testConfig),
+            "enum E {}".asExample(configuration: testConfig),
+            "extension E {}".asExample(configuration: testConfigWithAllTypes),
+            "protocol P {}".asExample(configuration: testConfigWithAllTypes),
+            "struct S {}".asExample(configuration: testConfig),
+            """
                 actor A {
                     let x = 0
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 class C {
                     let x = 0
                     // comments
@@ -36,67 +37,67 @@ struct TypeBodyLengthRule: Rule {
                     // be
                     // ignored
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 enum E {
                     let x = 0
                     // empty lines will be ignored
 
 
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 protocol P {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfig),
-        ],
-        triggeringExamples: [
-            Example("""
+                """.asExample(configuration: testConfig),
+        ]),
+        triggeringExamples: #examples([
+            """
                 ↓actor A {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 ↓class C {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 ↓enum E {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfig),
-            Example("""
+                """.asExample(configuration: testConfig),
+            """
                 ↓extension E {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfigWithAllTypes),
-            Example("""
+                """.asExample(configuration: testConfigWithAllTypes),
+            """
                 ↓protocol P {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfigWithAllTypes),
-            Example("""
+                """.asExample(configuration: testConfigWithAllTypes),
+            """
                 ↓struct S {
                     let x = 0
                     let y = 1
                     let z = 2
                 }
-                """, configuration: testConfig),
-        ]
+                """.asExample(configuration: testConfig),
+        ])
     )
 }
 

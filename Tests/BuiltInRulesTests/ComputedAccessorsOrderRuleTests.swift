@@ -1,3 +1,4 @@
+import SwiftLintCore
 import TestHelpers
 import Testing
 
@@ -7,8 +8,8 @@ import Testing
 struct ComputedAccessorsOrderRuleTests {
     @Test
     func setGetConfiguration() {
-        let nonTriggeringExamples = [
-            Example("""
+        let nonTriggeringExamples = #examples([
+            """
             class Foo {
                 var foo: Int {
                     set {
@@ -19,10 +20,10 @@ struct ComputedAccessorsOrderRuleTests {
                     }
                 }
             }
-            """),
-        ]
-        let triggeringExamples = [
-            Example("""
+            """,
+        ])
+        let triggeringExamples = #examples([
+            """
             class Foo {
                 var foo: Int {
                     ↓get {
@@ -33,8 +34,8 @@ struct ComputedAccessorsOrderRuleTests {
                     }
                 }
             }
-            """),
-        ]
+            """,
+        ])
 
         let description = ComputedAccessorsOrderRule.description
             .with(triggeringExamples: triggeringExamples)
@@ -45,7 +46,7 @@ struct ComputedAccessorsOrderRuleTests {
 
     @Test
     func getSetPropertyReason() {
-        let example = Example("""
+        let example = Example(code: """
         class Foo {
             var foo: Int {
                 set {
@@ -66,7 +67,7 @@ struct ComputedAccessorsOrderRuleTests {
 
     @Test
     func getSetSubscriptReason() {
-        let example = Example("""
+        let example = Example(code: """
         class Foo {
             subscript(i: Int) -> Int {
                 set {
@@ -87,7 +88,7 @@ struct ComputedAccessorsOrderRuleTests {
 
     @Test
     func setGetPropertyReason() {
-        let example = Example("""
+        let example = Example(code: """
         class Foo {
             var foo: Int {
                 get {
@@ -108,7 +109,7 @@ struct ComputedAccessorsOrderRuleTests {
 
     @Test
     func setGetSubscriptReason() {
-        let example = Example("""
+        let example = Example(code: """
         class Foo {
             subscript(i: Int) -> Int {
                 get {

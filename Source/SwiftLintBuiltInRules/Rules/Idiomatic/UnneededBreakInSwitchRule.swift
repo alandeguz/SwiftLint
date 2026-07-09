@@ -1,17 +1,18 @@
 import SwiftBasicFormat
+import SwiftLintCore
 import SwiftSyntax
 
 private func embedInSwitch(
     _ text: String,
-    case: String = "case .bar",
-    file: StaticString = #filePath,
-    line: UInt = #line) -> Example {
-    Example("""
+    case: String = "case .bar"
+) -> Example {
+    // No need to capture file and line here, because they are overwritten by the #examples macro.
+    Example(code: """
         switch foo {
         \(`case`):
             \(text)
         }
-        """, file: file, line: line)
+        """)
 }
 
 @SwiftSyntaxRule(explicitRewriter: true)
@@ -23,13 +24,13 @@ struct UnneededBreakInSwitchRule: Rule {
         name: "Unneeded Break in Switch",
         description: "Avoid using unneeded break statements",
         kind: .idiomatic,
-        nonTriggeringExamples: [
+        nonTriggeringExamples: #examples([
             embedInSwitch("break"),
             embedInSwitch("break", case: "default"),
             embedInSwitch("for i in [0, 1, 2] { break }"),
             embedInSwitch("if true { break }"),
             embedInSwitch("something()"),
-            Example("""
+            """
             let items = [Int]()
             for item in items {
                 if bar() {
@@ -41,15 +42,15 @@ struct UnneededBreakInSwitchRule: Rule {
                     }
                 }
             }
-            """),
-        ],
-        triggeringExamples: [
+            """,
+        ]),
+        triggeringExamples: #examples([
             embedInSwitch("something()\n    ↓break"),
             embedInSwitch("something()\n    ↓break // comment"),
             embedInSwitch("something()\n    ↓break", case: "default"),
             embedInSwitch("something()\n    ↓break", case: "case .foo, .foo2 where condition"),
-        ],
-        corrections: [
+        ]),
+        corrections: #corrections([
             embedInSwitch("something()\n    ↓break")
                 : embedInSwitch("something()"),
             embedInSwitch("something()\n    ↓break // line comment")
@@ -86,7 +87,7 @@ struct UnneededBreakInSwitchRule: Rule {
                 : embedInSwitch("something()", case: "default"),
             embedInSwitch("something()\n    ↓break", case: "case .foo, .foo2 where condition")
                 : embedInSwitch("something()", case: "case .foo, .foo2 where condition"),
-        ]
+        ])
     )
 }
 

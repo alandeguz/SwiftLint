@@ -76,3 +76,26 @@ public macro SwiftSyntaxRule(foldExpressions: Bool = false,
     module: "SwiftLintCoreMacros",
     type: "SwiftSyntaxRule"
 )
+
+/// Macro that expands an array into an array of ``Example``s. Elements are usually string literals, but an
+/// existing ``Example`` expression (e.g. `"code".asExample(configuration:)`) works too.
+///
+/// The parameter is typed `[Example]` (``Example`` is `ExpressibleByStringInterpolation`), so an unsupported element
+/// such as an `Int` fails as a plain type error on the literal you wrote rather than as a macro-expansion failure.
+@freestanding(expression)
+public macro examples(_ examples: [Example]) -> [Example] = #externalMacro(
+    module: "SwiftLintCoreMacros",
+    type: "Examples"
+)
+
+/// Macro that expands a dictionary into a dictionary of ``Example``s. Keys and values are usually string literals,
+/// but an existing ``Example`` expression works too.
+///
+/// Both key and value are typed ``Example`` (which is `ExpressibleByStringInterpolation` and `Hashable`), so an
+/// unsupported key or value fails as a plain type error on the literal you wrote rather than as a macro-expansion
+/// failure.
+@freestanding(expression)
+public macro corrections(_ examples: [Example: Example]) -> [Example: Example] = #externalMacro(
+    module: "SwiftLintCoreMacros",
+    type: "Corrections"
+)
