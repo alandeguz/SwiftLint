@@ -1,4 +1,0 @@
-parent_config: ../base/parent.yml
-
-excluded:
-  - Sources/Generated
